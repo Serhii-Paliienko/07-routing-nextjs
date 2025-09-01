@@ -10,39 +10,51 @@ import NoteList from "@/components/NoteList/NoteList";
 import Modal from "@/components/Modal/Modal";
 import NoteForm from "@/components/NoteForm/NoteForm";
 import { fetchNotes, type FetchNotesResponse } from "@/lib/api";
+import { NoteTag } from "@/types/note";
 
 function Loader() {
-  return <div className={css.loader}>Loading...</div>;
+  return <div>Loading...</div>;
 }
 function ErrorBox({ error }: { error: unknown }) {
   const msg = error instanceof Error ? error.message : "Unknown error";
-  return <div className={css.error}>Error: {msg}</div>;
+  return <div>Error: {msg}</div>;
 }
 
 export default function NotesClient({
   initialPage,
   perPage,
   initialSearch,
+  selectedTag,
 }: {
   initialPage: number;
   perPage: number;
   initialSearch: string;
+  selectedTag: "All" | NoteTag;
 }) {
   const [page, setPage] = useState(initialPage);
   const [search, setSearch] = useState(initialSearch);
   const [debounceSearch] = useDebounce(search, 300);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  useEffect(() => setPage(1), [debounceSearch]);
+  useEffect(() => setPage(1), [debounceSearch, selectedTag]);
 
   const queryKey = useMemo(
-    () => ["notes", { page, perPage, search: debounceSearch }],
-    [page, perPage, debounceSearch]
+    () => [
+      "notes",
+      { page, perPage, search: debounceSearch, tag: selectedTag },
+    ],
+    [page, perPage, debounceSearch, selectedTag]
   );
 
   const { data, isPending, error } = useQuery<FetchNotesResponse>({
     queryKey,
-    queryFn: () => fetchNotes({ page, perPage, search: debounceSearch }),
+    queryFn: () =>
+      fetchNotes({
+        page,
+        perPage,
+        search: debounceSearch,
+        tag: selectedTag === "All" ? undefined : selectedTag,
+      }),
     placeholderData: keepPreviousData,
     staleTime: 5_000,
     refetchOnWindowFocus: false,

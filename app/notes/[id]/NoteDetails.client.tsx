@@ -1,14 +1,11 @@
 "use client";
 
-import { useParams } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import { fetchNoteById } from "@/lib/api";
 import css from "./page.module.css";
+import ClientLocalTime from "@/components/ClientLocalTime/ClientLocalTime";
 
-export default function NoteDetailsClient() {
-  const params = useParams<{ id: string }>();
-  const id = params.id;
-
+export default function NoteDetailsClient({ id }: { id: string }) {
   const {
     data: note,
     isLoading,
@@ -30,9 +27,12 @@ export default function NoteDetailsClient() {
       <div className={css.item}>
         <div className={css.header}>
           <h2>{note.title}</h2>
+          <span className={css.tag}>{note.tag}</span>
         </div>
         <p className={css.content}>{note.content}</p>
-        <p className={css.date}>{new Date(note.createdAt).toLocaleString()}</p>
+        <p className={css.date}>
+          <ClientLocalTime iso={note.createdAt} />{" "}
+        </p>
       </div>
     </div>
   );

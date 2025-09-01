@@ -21,11 +21,7 @@ const Pagination = ({
         pageCount={pageCount}
         onPageChange={(e) => onPageChange(e.selected + 1)}
         containerClassName={css.pagination}
-        pageClassName={css.page}
         activeClassName={css.active}
-        previousClassName={css.prev}
-        nextClassName={css.next}
-        breakClassName={css.break}
         nextLabel="&raquo;"
         previousLabel="&laquo;"
       />

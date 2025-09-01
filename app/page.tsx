@@ -2,7 +2,7 @@ import css from "./page.module.css";
 
 export default function Home() {
   return (
-    <div className={css.page}>
+    <div className={css.main}>
       <main>
         <div className={css.container}>
           <h1 className={css.title}>Welcome to NoteHub</h1>
