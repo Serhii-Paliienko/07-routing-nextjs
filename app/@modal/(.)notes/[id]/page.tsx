@@ -4,7 +4,7 @@ import {
   HydrationBoundary,
 } from "@tanstack/react-query";
 import { fetchNoteById } from "@/lib/api";
-import NoteModal from "./NoteModal.client";
+import NotePreview from "./NotePreview.client";
 
 export default async function InterceptedNoteModalPage({
   params,
@@ -20,7 +20,7 @@ export default async function InterceptedNoteModalPage({
 
   return (
     <HydrationBoundary state={dehydrate(qc)}>
-      <NoteModal />
+      <NotePreview />
     </HydrationBoundary>
   );
 }
